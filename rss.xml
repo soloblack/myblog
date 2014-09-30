@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+    <channel>
+        <title>RSS feed title</title>
+        <link>Homepage link</link>
+        <description>RSS feed description</description>
+        <lastBuildDate>Mon, 29 Sep 2014 23:10:25 +0800</lastBuildDate>
+        <language>zh-cn</language>
+        
+        <item>
+            <title>iComet代码粗解(1)</title>
+            <link>Homepage link/articles/icomet-part1.html?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=rss</link>
+            <guid>Homepage link/articles/icomet-part1.html</guid>
+            <author>thesoloblack@gmail.com SoLoBlack</author>
+            <pubDate>Mon, 29 Sep 2014 00:00:00 +0800</pubDate>
+            <description>&lt;h1 id=&quot;icomet代码粗解（1）&quot;&gt;iComet代码粗解（1）&lt;/h1&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;!-- toc --&gt;&lt;/p&gt;
+&lt;h2 id=&quot;初识icomet&quot;&gt;初识iComet&lt;/h2&gt;
+&lt;p&gt;iComet 是一个使用 C++ 语言开发的支持百万并发连接的 comet/push 服务器, 支持百万级并发连接, 内存占用少, 性能优越. 可用于移动 App 的 Push Server(消息推送服务器), 或者用于 Web Push(Web 服务器推). 用于 Web Push 时, 支持的浏览器和操作系统平台包括: Safari(iOS, Mac), Firefox/Chrome(Windows, Mac), IE6+
+&lt;a href=&quot;http://www.ideawu.net/blog/icomet&quot;&gt;iComet项目主页&lt;/a&gt;，&lt;a href=&quot;https://github.com/ideawu/icomet&quot;&gt;GitHub地址&lt;/a&gt;，在此感谢iComet的&lt;a href=&quot;http://weibo.com/ideawu&quot;&gt;作者ideawu&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;推荐各位在阅读以下内容之前看一下原作者之前的两篇Blog：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.ideawu.net/blog/archives/740.html&quot;&gt;构建C1000K的服务器(1) – 基础&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.ideawu.net/blog/archives/742.html&quot;&gt;构建C1000K的服务器(2) – 实现百万连接的comet服务器&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在阅读完两篇blog之后让我们先粗略的了解一下整个代码。&lt;/p&gt;
+&lt;h3 id=&quot;subscriberh-amp-subscribercpp&quot;&gt;subscriber.h &amp; subscriber.cpp&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;订阅者&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&quot;channelh-amp-channelcpp&quot;&gt;channel.h &amp; channel.cpp&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;通道，subscriber可以订阅通道，通道中有消息就会发过来&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&quot;serverh-amp-servercpp&quot;&gt;server.h &amp; server.cpp&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;server有多种连接策略，poll，iframe，stream&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&quot;presenceh&quot;&gt;Presence.h&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;相应的presence.cpp在另一个文件夹中，而现有的comet-server中已经整合了之前的功能，presence是一个特殊的订阅者（我是这么理解的），它订阅所有channel的存在情况（用在IM上就可以理解为在线状态）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&quot;comet-servercpp&quot;&gt;comet-server.cpp&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;comet-server最终实现版本，暂且这里就列个TODO吧，理解不够深有点讲不清楚&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;icomet结构-amp-api&quot;&gt;iComet结构 &amp; API&lt;/h2&gt;
+&lt;h3 id=&quot;结构&quot;&gt;结构&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;http://soloimage-soloimage.stor.sinaapp.com/original/776c88e46f39991731106860e78dd268.png&quot; alt=&quot;iComet大致结构&quot;&gt;&lt;/p&gt;
+&lt;p&gt;每个Subscriber订阅一个Channel，每个Channel里有它的订阅者的链表。每个Channel被一个Server控制。&lt;/p&gt;
+</description>
+        </item>
+        
+        <item>
+            <title>小猪IM整体架构及实现(1)</title>
+            <link>Homepage link/articles/xiaozhu-im-part1.html?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=rss</link>
+            <guid>Homepage link/articles/xiaozhu-im-part1.html</guid>
+            <author>thesoloblack@gmail.com SoLoBlack</author>
+            <pubDate>Mon, 29 Sep 2014 00:00:00 +0800</pubDate>
+            <description>&lt;h1 id=&quot;小猪短租im整体架构及实现&quot;&gt;小猪短租IM整体架构及实现&lt;/h1&gt;
+&lt;hr&gt;
+&lt;!-- toc --&gt;
+
+&lt;h2 id=&quot;im现状及需求&quot;&gt;IM现状及需求&lt;/h2&gt;
+&lt;p&gt;网站业务逻辑复杂，面对即将上线的IOS,Android的房东以及房客客户端，IM Server将面临巨大的压力，所以需要对现有IM架构进行调整。&lt;/p&gt;
+&lt;h3 id=&quot;im现状&quot;&gt;IM现状&lt;/h3&gt;
+&lt;p&gt;IM现状有两个Server：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;与无线端通信使用开源的&lt;a href=&quot;http://zh.wikipedia.org/wiki/XMPP&quot;&gt;XMPP协议&lt;/a&gt;使用XMPP Server&lt;/li&gt;
+&lt;li&gt;与WebIM端和HTML5端使用JSON数据格式进行通讯，使用&lt;a href=&quot;http://en.wikipedia.org/wiki/Push_technology&quot;&gt;Pushlets&lt;/a&gt;，开源地址&lt;a href=&quot;http://www.pushlets.com/&quot;&gt;Pushlets&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;两个Server之间还需要互相通信&lt;/p&gt;
+&lt;h3 id=&quot;im需求&quot;&gt;IM需求&lt;/h3&gt;
+&lt;h4 id=&quot;业务需求&quot;&gt;业务需求&lt;/h4&gt;
+&lt;p&gt;目前来讲消息来源主要有6个：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;WebIM&lt;/li&gt;
+&lt;li&gt;HTML5 IM&lt;/li&gt;
+&lt;li&gt;IOS房东客户端&lt;/li&gt;
+&lt;li&gt;IOS房客客户端&lt;/li&gt;
+&lt;li&gt;Android房东客户端&lt;/li&gt;
+&lt;li&gt;Android房客客户端&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;消息的类型主要有3种:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;提醒&lt;/li&gt;
+&lt;li&gt;消息&lt;/li&gt;
+&lt;li&gt;心跳 (heartbeat)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&quot;性能需求&quot;&gt;性能需求&lt;/h4&gt;
+&lt;p&gt;现状日均消息量1w+，并发量不高，但是为了以后扩展方便，需要解决高并发的问题，并且使新的服务器支持分布式。&lt;a href=&quot;http://www.ideawu.net/blog/tag/c1000k&quot;&gt;C1000K问题&lt;/a&gt;
+需要无阻塞的通信框架，对于IO操作需要谨慎。&lt;/p&gt;
+&lt;h2 id=&quot;im架构&quot;&gt;IM架构&lt;/h2&gt;
+&lt;h3 id=&quot;业界案例&quot;&gt;业界案例&lt;/h3&gt;
+&lt;p&gt;参考几个大网站的架构，例如Facebook、淘宝、赶集、陌陌等&lt;/p&gt;
+&lt;p&gt;FaceBook IM架构
+&lt;img src=&quot;http://soloimage-soloimage.stor.sinaapp.com/original/2e778b0b5e475a601538405d4ff4192b.png&quot; alt=&quot;FaceBook IM&quot;&gt;&lt;/p&gt;
+&lt;p&gt;淘宝 IM架构
+&lt;img src=&quot;http://soloimage-soloimage.stor.sinaapp.com/original/9bc6a8296234d35568075839eafc6fa7.png&quot; alt=&quot;淘宝IM架构&quot;&gt;&lt;/p&gt;
+&lt;p&gt;赶集 IM架构
+&lt;img src=&quot;http://soloimage-soloimage.stor.sinaapp.com/original/80929ad6e0db38e08b37878cbb182ee6.png&quot; alt=&quot;赶集IM架构&quot;&gt;&lt;/p&gt;
+&lt;p&gt;陌陌 IM架构
+&lt;img src=&quot;http://soloimage-soloimage.stor.sinaapp.com/original/b5297a8901fce67dce42d4e88dea685e.png&quot; alt=&quot;陌陌IM架构&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;本次修改&quot;&gt;本次修改&lt;/h3&gt;
+&lt;p&gt;小猪新老架构，橙色为新的架构（还未完全设计完成，涉及业务逻辑比较复杂，所以需要对现有版本做兼容）
+&lt;img src=&quot;http://soloimage-soloimage.stor.sinaapp.com/original/b5b58cf1432c1ddc1f5c13d853450386.png&quot; alt=&quot;小猪新老架构&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;具体实现&quot;&gt;具体实现&lt;/h2&gt;
+&lt;p&gt;Comet Server 使用了开源项目iComet进行二次开发，&lt;a href=&quot;http://www.ideawu.net/blog/icomet&quot;&gt;iComet项目主页&lt;/a&gt;，&lt;a href=&quot;https://github.com/ideawu/icomet&quot;&gt;GitHub地址&lt;/a&gt;
+在此感谢iComet的&lt;a href=&quot;http://weibo.com/ideawu&quot;&gt;作者ideawu&lt;/a&gt;。&lt;/p&gt;
+&lt;h3 id=&quot;介绍icomet&quot;&gt;介绍iComet&lt;/h3&gt;
+&lt;p&gt;iComet 是一个使用 C++ 语言开发的支持百万并发连接的 comet/push 服务器, 支持百万级并发连接, 内存占用少, 性能优越. 可用于移动 App 的 Push Server(消息推送服务器), 或者用于 Web Push(Web 服务器推). 用于 Web Push 时, 支持的浏览器和操作系统平台包括: Safari(iOS, Mac), Firefox/Chrome(Windows, Mac), IE6+&lt;/p&gt;
+&lt;h3 id=&quot;icomet的工作流程&quot;&gt;iComet的工作流程&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;http://soloimage-soloimage.stor.sinaapp.com/original/6e62787cf161ffb3ddfee69e78a4a589.png&quot; alt=&quot;iComet的工作流程&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;对于icomet二次开发的修改点&quot;&gt;对于iComet二次开发的修改点&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;对于在线状态的修改，iComet支持订阅在线状态，但是不符合业务需求&lt;/li&gt;
+&lt;li&gt;对于好友关系的维护，预期是在Web Tier中用PHP实现，它的功能是维护好友关系并且把用户在线状态，好友关系状态都放到队列去，然后定期执行队列里的命令，放到数据库。&lt;/li&gt;
+&lt;li&gt;对于离线消息，iComet放到内存里没有进行持久化，在改版中要进行持久化。&lt;/li&gt;
+&lt;li&gt;对于消息的格式需要根据业务进行一定的修改。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

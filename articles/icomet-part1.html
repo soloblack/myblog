@@ -1,0 +1,274 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="description" content="Content of description meta tag"/>
+        <meta name="keywords" content="keyword1,keyword2,keyword3"/>
+        <meta name="author" content="Content of author meta tag"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+        <title>SoLoBlack - iComet代码粗解(1)
+</title>
+        <link rel="stylesheet" href="/assets/vendor/normalize.css"/>
+        <link rel="stylesheet" href="/assets/vendor/prettify-night.css"/>
+        <link rel="stylesheet" href="/assets/themes/default/main.css"/>
+        <link rel="shortcut icon" href="/fav.ico"/>
+        <script type="text/javascript" src="/assets/vendor/prettify.js"></script>
+        <style>
+#elevator_item {
+    width: 60px;
+    height: 100px;
+    position: fixed;
+    right: 15px;
+    bottom: 15px;
+    -webkit-transition: opacity .4s ease-in-out;
+    -moz-transition: opacity .4s ease-in-out;
+    -o-transition: opacity .4s ease-in-out;
+    opacity: 1;
+    z-index: 100020;
+    display: none;
+}
+#elevator_item.off {
+    opacity: 0;
+    visibility: hidden
+}
+#elevator {
+    display: block;
+    width: 60px;
+    height: 50px;
+    background: url(http://soloimage-soloimage.stor.sinaapp.com/original/3a0ac723388795990a5e17a6a0fc97c3.png) center center no-repeat;
+    background-color: #444;
+    background-color: rgba(0,0,0,.6);
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.2);
+    cursor: pointer;
+    margin-bottom: 10px
+}
+#elevator:hover {
+    background-color: rgba(0,0,0,.7)
+}
+#elevator:active {
+    background-color: rgba(0,0,0,.75)
+}
+#elevator_item .qr {
+    display: block;
+    width: 60px;
+    height: 40px;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.2);
+    cursor: pointer;
+    background: url(http://soloimage-soloimage.stor.sinaapp.com/original/de8685ffd3d71949539910f167181a6b.png) center center no-repeat;
+    background-color: #444;
+    background-color: rgba(0,0,0,.6)
+}
+#elevator_item .qr:hover {
+    background-color: rgba(0,0,0,.7)
+}
+#elevator_item .qr:active {
+    background-color: rgba(0,0,0,.75)
+}
+#elevator_item .qr-popup {
+    width: 170px;
+    height: 200px;
+    background: #fff;
+    box-shadow: 0 1px 8px rgba(0,0,0,.1);
+    position: absolute;
+    left: -180px;
+    bottom: 0;
+    border-radius: 2px;
+    display: none;
+    text-align: center
+}
+#elevator_item .qr-popup .code-link {
+    display: block;
+    margin: 10px;
+    color: #777
+}
+#elevator_item .qr-popup .code {
+    display: block;
+    margin-bottom: 10px
+}
+#elevator_item .qr-popup .arr {
+    width: 6px;
+    height: 11px;
+    background: url(http://soloimage-soloimage.stor.sinaapp.com/original/4919b036b7315926d600928203014f77.png) 0 0 no-repeat;
+    position: absolute;
+    right: -6px;
+    bottom: 14px
+}
+</style>
+<script type="text/javascript">
+var _speedMark = new Date();
+</script>
+
+    </head>
+    <body onload="prettyPrint()">
+    <div id="header">
+        <div id="header-inner">
+            <div id="title"><a href="/">SoLoBlack</a></div>
+            <div id="subtitle">小码农的成长之路</div>
+        </div>
+    </div>
+
+<div id="main">
+    <div id="main-inner">
+        <div id="topnav">
+            <ul>
+                <li><a href="/">首页</a></li>
+                <li class="sep"> | </li>
+                <li><a href="/tag.html">标签</a></li>
+                
+<li class="sep"> | </li>
+<li><a href="/pages/about-me.html" target="_self">关于我</a></li>
+
+<li class="sep"> | </li>
+<li><a href="/pages/Share.html" target="_self">博客分享</a></li>
+
+<li class="sep"> | </li>
+<li><a href="https://github.com/ericzhang-cn/papery" target="_blank">这个博客是如何搭建的</a></li>
+
+
+            </ul>
+            <div style="clear:both;"></div>
+        </div>
+        <div id="article-title">
+            <a href="/articles/icomet-part1.html">iComet代码粗解(1)</a>
+        </div>
+        <div id="article-meta">
+            作者 SoLoBlack | 发布于 2014-09-29
+        </div>
+        <div id="article-tags">
+        
+        <a class="tag" href="/tag.html#iComet">iComet</a>
+        
+        </div>
+        <div id="article-content">
+            <h1 id="icomet代码粗解（1）">iComet代码粗解（1）</h1>
+<hr>
+<!-- toc -->
+
+<ul>
+<li><a href="#初识icomet">初识iComet</a><ul>
+<li><a href="#subscriberh-subscribercpp">subscriber.h &amp; subscriber.cpp</a></li>
+<li><a href="#channelh-channelcpp">channel.h &amp; channel.cpp</a></li>
+<li><a href="#serverh-servercpp">server.h &amp; server.cpp</a></li>
+<li><a href="#presenceh">Presence.h</a></li>
+<li><a href="#comet-servercpp">comet-server.cpp</a></li>
+</ul>
+</li>
+<li><a href="#icomet结构-api">iComet结构 &amp; API</a><ul>
+<li><a href="#结构">结构</a></li>
+</ul>
+</li>
+</ul>
+<!-- toc stop -->
+
+<h2 id="初识icomet">初识iComet</h2>
+<p>iComet 是一个使用 C++ 语言开发的支持百万并发连接的 comet/push 服务器, 支持百万级并发连接, 内存占用少, 性能优越. 可用于移动 App 的 Push Server(消息推送服务器), 或者用于 Web Push(Web 服务器推). 用于 Web Push 时, 支持的浏览器和操作系统平台包括: Safari(iOS, Mac), Firefox/Chrome(Windows, Mac), IE6+
+<a href="http://www.ideawu.net/blog/icomet">iComet项目主页</a>，<a href="https://github.com/ideawu/icomet">GitHub地址</a>，在此感谢iComet的<a href="http://weibo.com/ideawu">作者ideawu</a>。</p>
+<p>推荐各位在阅读以下内容之前看一下原作者之前的两篇Blog：</p>
+<blockquote>
+<ul>
+<li><a href="http://www.ideawu.net/blog/archives/740.html">构建C1000K的服务器(1) – 基础</a></li>
+<li><a href="http://www.ideawu.net/blog/archives/742.html">构建C1000K的服务器(2) – 实现百万连接的comet服务器</a></li>
+</ul>
+</blockquote>
+<p>在阅读完两篇blog之后让我们先粗略的了解一下整个代码。</p>
+<h3 id="subscriberh-amp-subscribercpp">subscriber.h &amp; subscriber.cpp</h3>
+<blockquote>
+<ul>
+<li>订阅者</li>
+</ul>
+</blockquote>
+<h3 id="channelh-amp-channelcpp">channel.h &amp; channel.cpp</h3>
+<blockquote>
+<ul>
+<li>通道，subscriber可以订阅通道，通道中有消息就会发过来</li>
+</ul>
+</blockquote>
+<h3 id="serverh-amp-servercpp">server.h &amp; server.cpp</h3>
+<blockquote>
+<ul>
+<li>server有多种连接策略，poll，iframe，stream</li>
+</ul>
+</blockquote>
+<h3 id="presenceh">Presence.h</h3>
+<blockquote>
+<ul>
+<li>相应的presence.cpp在另一个文件夹中，而现有的comet-server中已经整合了之前的功能，presence是一个特殊的订阅者（我是这么理解的），它订阅所有channel的存在情况（用在IM上就可以理解为在线状态）</li>
+</ul>
+</blockquote>
+<h3 id="comet-servercpp">comet-server.cpp</h3>
+<blockquote>
+<ul>
+<li>comet-server最终实现版本，暂且这里就列个TODO吧，理解不够深有点讲不清楚</li>
+</ul>
+</blockquote>
+<h2 id="icomet结构-amp-api">iComet结构 &amp; API</h2>
+<h3 id="结构">结构</h3>
+<p><img src="http://soloimage-soloimage.stor.sinaapp.com/original/776c88e46f39991731106860e78dd268.png" alt="iComet大致结构"></p>
+<p>每个Subscriber订阅一个Channel，每个Channel里有它的订阅者的链表。每个Channel被一个Server控制。</p>
+
+        </div>
+        
+    </div>
+</div>
+        <div id="footer">
+            <div id="footer-inner">
+                <p id="copyright">Copyright (c) 2014-2014 Copyrighter</p>
+            </div>
+        </div>
+        <div id="elevator_item">
+    <a id="elevator" onclick="return false;" title="回到顶部"></a>
+    <a class="qr"></a>
+    <div class="qr-popup">
+        <div id="qrcodeCanvas"></div>
+        <span>扫描浏览本网页</span>
+    </div>
+</div>
+<script src="http://lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.min.js" type="text/javascript"></script> 
+<script type="text/javascript" src="http://jq22.qiniudn.com/jquery.qrcode.min.js"></script>
+<script style='text/javascript'>
+$('#qrcodeCanvas').qrcode({
+text: window.location.href,//二维码代表的字符串（本页面的URL）
+width: 167,//二维码宽度
+height: 167//二维码高度
+});
+</script>
+
+<script type="text/javascript">
+$(function() {
+        $(window).scroll(function(){
+            var scrolltop=$(this).scrollTop();      
+            if(scrolltop>=200){     
+            $("#elevator_item").show();
+            }else{
+            $("#elevator_item").hide();
+            }
+            });     
+        $("#elevator").click(function(){
+            $("html,body").animate({scrollTop: 0}, 500);    
+            });     
+        $(".qr").hover(function(){
+            $(".qr-popup").show();
+            },function(){
+            $(".qr-popup").hide();
+            }); 
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['$','$'], ['\\(','\\)']],
+            processEscapes: true
+        }
+    });
+</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=37497557" charset="UTF-8"></script>
+
+    </body>
+</html>
+

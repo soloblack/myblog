@@ -1,0 +1,50 @@
+<div id="elevator_item">
+    <a id="elevator" onclick="return false;" title="回到顶部"></a>
+    <a class="qr"></a>
+    <div class="qr-popup">
+        <div id="qrcodeCanvas"></div>
+        <span>扫描浏览本网页</span>
+    </div>
+</div>
+<script src="http://lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.min.js" type="text/javascript"></script> 
+<script type="text/javascript" src="http://jq22.qiniudn.com/jquery.qrcode.min.js"></script>
+<script style='text/javascript'>
+$('#qrcodeCanvas').qrcode({
+text: window.location.href,//二维码代表的字符串（本页面的URL）
+width: 167,//二维码宽度
+height: 167//二维码高度
+});
+</script>
+
+<script type="text/javascript">
+$(function() {
+        $(window).scroll(function(){
+            var scrolltop=$(this).scrollTop();      
+            if(scrolltop>=200){     
+            $("#elevator_item").show();
+            }else{
+            $("#elevator_item").hide();
+            }
+            });     
+        $("#elevator").click(function(){
+            $("html,body").animate({scrollTop: 0}, 500);    
+            });     
+        $(".qr").hover(function(){
+            $(".qr-popup").show();
+            },function(){
+            $(".qr-popup").hide();
+            }); 
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['$','$'], ['\\(','\\)']],
+            processEscapes: true
+        }
+    });
+</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=37497557" charset="UTF-8"></script>

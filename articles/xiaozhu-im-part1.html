@@ -1,0 +1,309 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="description" content="Content of description meta tag"/>
+        <meta name="keywords" content="keyword1,keyword2,keyword3"/>
+        <meta name="author" content="Content of author meta tag"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+        <title>SoLoBlack - 小猪IM整体架构及实现(1)
+</title>
+        <link rel="stylesheet" href="/assets/vendor/normalize.css"/>
+        <link rel="stylesheet" href="/assets/vendor/prettify-night.css"/>
+        <link rel="stylesheet" href="/assets/themes/default/main.css"/>
+        <link rel="shortcut icon" href="/fav.ico"/>
+        <script type="text/javascript" src="/assets/vendor/prettify.js"></script>
+        <style>
+#elevator_item {
+    width: 60px;
+    height: 100px;
+    position: fixed;
+    right: 15px;
+    bottom: 15px;
+    -webkit-transition: opacity .4s ease-in-out;
+    -moz-transition: opacity .4s ease-in-out;
+    -o-transition: opacity .4s ease-in-out;
+    opacity: 1;
+    z-index: 100020;
+    display: none;
+}
+#elevator_item.off {
+    opacity: 0;
+    visibility: hidden
+}
+#elevator {
+    display: block;
+    width: 60px;
+    height: 50px;
+    background: url(http://soloimage-soloimage.stor.sinaapp.com/original/3a0ac723388795990a5e17a6a0fc97c3.png) center center no-repeat;
+    background-color: #444;
+    background-color: rgba(0,0,0,.6);
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.2);
+    cursor: pointer;
+    margin-bottom: 10px
+}
+#elevator:hover {
+    background-color: rgba(0,0,0,.7)
+}
+#elevator:active {
+    background-color: rgba(0,0,0,.75)
+}
+#elevator_item .qr {
+    display: block;
+    width: 60px;
+    height: 40px;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.2);
+    cursor: pointer;
+    background: url(http://soloimage-soloimage.stor.sinaapp.com/original/de8685ffd3d71949539910f167181a6b.png) center center no-repeat;
+    background-color: #444;
+    background-color: rgba(0,0,0,.6)
+}
+#elevator_item .qr:hover {
+    background-color: rgba(0,0,0,.7)
+}
+#elevator_item .qr:active {
+    background-color: rgba(0,0,0,.75)
+}
+#elevator_item .qr-popup {
+    width: 170px;
+    height: 200px;
+    background: #fff;
+    box-shadow: 0 1px 8px rgba(0,0,0,.1);
+    position: absolute;
+    left: -180px;
+    bottom: 0;
+    border-radius: 2px;
+    display: none;
+    text-align: center
+}
+#elevator_item .qr-popup .code-link {
+    display: block;
+    margin: 10px;
+    color: #777
+}
+#elevator_item .qr-popup .code {
+    display: block;
+    margin-bottom: 10px
+}
+#elevator_item .qr-popup .arr {
+    width: 6px;
+    height: 11px;
+    background: url(http://soloimage-soloimage.stor.sinaapp.com/original/4919b036b7315926d600928203014f77.png) 0 0 no-repeat;
+    position: absolute;
+    right: -6px;
+    bottom: 14px
+}
+</style>
+<script type="text/javascript">
+var _speedMark = new Date();
+</script>
+
+    </head>
+    <body onload="prettyPrint()">
+    <div id="header">
+        <div id="header-inner">
+            <div id="title"><a href="/">SoLoBlack</a></div>
+            <div id="subtitle">小码农的成长之路</div>
+        </div>
+    </div>
+
+<div id="main">
+    <div id="main-inner">
+        <div id="topnav">
+            <ul>
+                <li><a href="/">首页</a></li>
+                <li class="sep"> | </li>
+                <li><a href="/tag.html">标签</a></li>
+                
+<li class="sep"> | </li>
+<li><a href="/pages/about-me.html" target="_self">关于我</a></li>
+
+<li class="sep"> | </li>
+<li><a href="/pages/Share.html" target="_self">博客分享</a></li>
+
+<li class="sep"> | </li>
+<li><a href="https://github.com/ericzhang-cn/papery" target="_blank">这个博客是如何搭建的</a></li>
+
+
+            </ul>
+            <div style="clear:both;"></div>
+        </div>
+        <div id="article-title">
+            <a href="/articles/xiaozhu-im-part1.html">小猪IM整体架构及实现(1)</a>
+        </div>
+        <div id="article-meta">
+            作者 SoLoBlack | 发布于 2014-09-29
+        </div>
+        <div id="article-tags">
+        
+        <a class="tag" href="/tag.html#IM">IM</a>
+        
+        <a class="tag" href="/tag.html#iComet">iComet</a>
+        
+        <a class="tag" href="/tag.html#架构">架构</a>
+        
+        <a class="tag" href="/tag.html#xiaozhu.com">xiaozhu.com</a>
+        
+        </div>
+        <div id="article-content">
+            <h1 id="小猪短租im整体架构及实现">小猪短租IM整体架构及实现</h1>
+<hr>
+<!-- toc -->
+
+<ul>
+<li><a href="#im现状及需求">IM现状及需求</a><ul>
+<li><a href="#im现状">IM现状</a></li>
+<li><a href="#im需求">IM需求</a><ul>
+<li><a href="#业务需求">业务需求</a></li>
+<li><a href="#性能需求">性能需求</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#im架构">IM架构</a><ul>
+<li><a href="#业界案例">业界案例</a></li>
+<li><a href="#本次修改">本次修改</a></li>
+</ul>
+</li>
+<li><a href="#具体实现">具体实现</a><ul>
+<li><a href="#介绍icomet">介绍iComet</a></li>
+<li><a href="#icomet的工作流程">iComet的工作流程</a></li>
+<li><a href="#对于icomet二次开发的修改点">对于iComet二次开发的修改点</a></li>
+</ul>
+</li>
+</ul>
+<!-- toc stop -->
+
+
+<h2 id="im现状及需求">IM现状及需求</h2>
+<p>网站业务逻辑复杂，面对即将上线的IOS,Android的房东以及房客客户端，IM Server将面临巨大的压力，所以需要对现有IM架构进行调整。</p>
+<h3 id="im现状">IM现状</h3>
+<p>IM现状有两个Server：</p>
+<blockquote>
+<ul>
+<li>与无线端通信使用开源的<a href="http://zh.wikipedia.org/wiki/XMPP">XMPP协议</a>使用XMPP Server</li>
+<li>与WebIM端和HTML5端使用JSON数据格式进行通讯，使用<a href="http://en.wikipedia.org/wiki/Push_technology">Pushlets</a>，开源地址<a href="http://www.pushlets.com/">Pushlets</a></li>
+</ul>
+</blockquote>
+<p>两个Server之间还需要互相通信</p>
+<h3 id="im需求">IM需求</h3>
+<h4 id="业务需求">业务需求</h4>
+<p>目前来讲消息来源主要有6个：</p>
+<blockquote>
+<ul>
+<li>WebIM</li>
+<li>HTML5 IM</li>
+<li>IOS房东客户端</li>
+<li>IOS房客客户端</li>
+<li>Android房东客户端</li>
+<li>Android房客客户端</li>
+</ul>
+</blockquote>
+<p>消息的类型主要有3种:</p>
+<blockquote>
+<ul>
+<li>提醒</li>
+<li>消息</li>
+<li>心跳 (heartbeat)</li>
+</ul>
+</blockquote>
+<h4 id="性能需求">性能需求</h4>
+<p>现状日均消息量1w+，并发量不高，但是为了以后扩展方便，需要解决高并发的问题，并且使新的服务器支持分布式。<a href="http://www.ideawu.net/blog/tag/c1000k">C1000K问题</a>
+需要无阻塞的通信框架，对于IO操作需要谨慎。</p>
+<h2 id="im架构">IM架构</h2>
+<h3 id="业界案例">业界案例</h3>
+<p>参考几个大网站的架构，例如Facebook、淘宝、赶集、陌陌等</p>
+<p>FaceBook IM架构
+<img src="http://soloimage-soloimage.stor.sinaapp.com/original/2e778b0b5e475a601538405d4ff4192b.png" alt="FaceBook IM"></p>
+<p>淘宝 IM架构
+<img src="http://soloimage-soloimage.stor.sinaapp.com/original/9bc6a8296234d35568075839eafc6fa7.png" alt="淘宝IM架构"></p>
+<p>赶集 IM架构
+<img src="http://soloimage-soloimage.stor.sinaapp.com/original/80929ad6e0db38e08b37878cbb182ee6.png" alt="赶集IM架构"></p>
+<p>陌陌 IM架构
+<img src="http://soloimage-soloimage.stor.sinaapp.com/original/b5297a8901fce67dce42d4e88dea685e.png" alt="陌陌IM架构"></p>
+<h3 id="本次修改">本次修改</h3>
+<p>小猪新老架构，橙色为新的架构（还未完全设计完成，涉及业务逻辑比较复杂，所以需要对现有版本做兼容）
+<img src="http://soloimage-soloimage.stor.sinaapp.com/original/b5b58cf1432c1ddc1f5c13d853450386.png" alt="小猪新老架构"></p>
+<h2 id="具体实现">具体实现</h2>
+<p>Comet Server 使用了开源项目iComet进行二次开发，<a href="http://www.ideawu.net/blog/icomet">iComet项目主页</a>，<a href="https://github.com/ideawu/icomet">GitHub地址</a>
+在此感谢iComet的<a href="http://weibo.com/ideawu">作者ideawu</a>。</p>
+<h3 id="介绍icomet">介绍iComet</h3>
+<p>iComet 是一个使用 C++ 语言开发的支持百万并发连接的 comet/push 服务器, 支持百万级并发连接, 内存占用少, 性能优越. 可用于移动 App 的 Push Server(消息推送服务器), 或者用于 Web Push(Web 服务器推). 用于 Web Push 时, 支持的浏览器和操作系统平台包括: Safari(iOS, Mac), Firefox/Chrome(Windows, Mac), IE6+</p>
+<h3 id="icomet的工作流程">iComet的工作流程</h3>
+<p><img src="http://soloimage-soloimage.stor.sinaapp.com/original/6e62787cf161ffb3ddfee69e78a4a589.png" alt="iComet的工作流程"></p>
+<h3 id="对于icomet二次开发的修改点">对于iComet二次开发的修改点</h3>
+<blockquote>
+<ul>
+<li>对于在线状态的修改，iComet支持订阅在线状态，但是不符合业务需求</li>
+<li>对于好友关系的维护，预期是在Web Tier中用PHP实现，它的功能是维护好友关系并且把用户在线状态，好友关系状态都放到队列去，然后定期执行队列里的命令，放到数据库。</li>
+<li>对于离线消息，iComet放到内存里没有进行持久化，在改版中要进行持久化。</li>
+<li>对于消息的格式需要根据业务进行一定的修改。</li>
+</ul>
+</blockquote>
+
+        </div>
+        
+    </div>
+</div>
+        <div id="footer">
+            <div id="footer-inner">
+                <p id="copyright">Copyright (c) 2014-2014 Copyrighter</p>
+            </div>
+        </div>
+        <div id="elevator_item">
+    <a id="elevator" onclick="return false;" title="回到顶部"></a>
+    <a class="qr"></a>
+    <div class="qr-popup">
+        <div id="qrcodeCanvas"></div>
+        <span>扫描浏览本网页</span>
+    </div>
+</div>
+<script src="http://lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.min.js" type="text/javascript"></script> 
+<script type="text/javascript" src="http://jq22.qiniudn.com/jquery.qrcode.min.js"></script>
+<script style='text/javascript'>
+$('#qrcodeCanvas').qrcode({
+text: window.location.href,//二维码代表的字符串（本页面的URL）
+width: 167,//二维码宽度
+height: 167//二维码高度
+});
+</script>
+
+<script type="text/javascript">
+$(function() {
+        $(window).scroll(function(){
+            var scrolltop=$(this).scrollTop();      
+            if(scrolltop>=200){     
+            $("#elevator_item").show();
+            }else{
+            $("#elevator_item").hide();
+            }
+            });     
+        $("#elevator").click(function(){
+            $("html,body").animate({scrollTop: 0}, 500);    
+            });     
+        $(".qr").hover(function(){
+            $(".qr-popup").show();
+            },function(){
+            $(".qr-popup").hide();
+            }); 
+        });
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['$','$'], ['\\(','\\)']],
+            processEscapes: true
+        }
+    });
+</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=37497557" charset="UTF-8"></script>
+
+    </body>
+</html>
+

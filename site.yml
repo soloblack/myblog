@@ -1,0 +1,25 @@
+title: SoLoBlack
+subtitle: 小码农的成长之路 
+link: Homepage link
+meta:
+  description: Content of description meta tag
+  keywords: !!seq
+    - keyword1
+    - keyword2
+    - keyword3
+  author: Content of author meta tag
+master:
+  name: SoLoBlack
+  about: Introduce yourself here
+  email: thesoloblack@gmail.com
+rss:
+  title: RSS feed title
+  desc: RSS feed description
+  lang: zh-cn
+  max: 10
+copyright:
+  owner: Copyrighter
+  beginYear: 2014
+  endYear: 2014
+theme: default
+codetheme: night
