@@ -7,7 +7,7 @@
         <meta name="keywords" content="keyword1,keyword2,keyword3"/>
         <meta name="author" content="Content of author meta tag"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-        <title>SoLoBlack - 小码农的成长之路
+        <title>SoLoBlack - PHP连接Mysql类文件
 </title>
         <link rel="stylesheet" href="/assets/vendor/normalize.css"/>
         <link rel="stylesheet" href="/assets/vendor/prettify-night.css"/>
@@ -131,49 +131,124 @@ var _speedMark = new Date();
             </ul>
             <div style="clear:both;"></div>
         </div>
-        <div id="tag-cloud">
+        <div id="article-title">
+            <a href="/articles/mysqllib-php.html">PHP连接Mysql类文件</a>
+        </div>
+        <div id="article-meta">
+            作者 SoLoBlack | 发布于 2014-10-09
+        </div>
+        <div id="article-tags">
         
-        <a href="/tag.html#iComet">iComet<span class="count">×2</span></a>
-        
-        <a href="/tag.html#PHP">PHP<span class="count">×1</span></a>
-        
-        <a href="/tag.html#IM">IM<span class="count">×1</span></a>
-        
-        <a href="/tag.html#架构">架构<span class="count">×1</span></a>
-        
-        <a href="/tag.html#xiaozhu.com">xiaozhu.com<span class="count">×1</span></a>
-        
-        <div style="clear:both;"></div></div>
-        <div id="tag-index">
-        
-            <h1><a name="iComet">iComet</a></h1>
-            
-            <p><a href="/articles/icomet-part1.html">iComet代码粗解(1)</a></p>
-            
-            <p><a href="/articles/xiaozhu-im-part1.html">小猪IM整体架构及实现(1)</a></p>
-            
-        
-            <h1><a name="PHP">PHP</a></h1>
-            
-            <p><a href="/articles/mysqllib-php.html">PHP连接Mysql类文件</a></p>
-            
-        
-            <h1><a name="IM">IM</a></h1>
-            
-            <p><a href="/articles/xiaozhu-im-part1.html">小猪IM整体架构及实现(1)</a></p>
-            
-        
-            <h1><a name="架构">架构</a></h1>
-            
-            <p><a href="/articles/xiaozhu-im-part1.html">小猪IM整体架构及实现(1)</a></p>
-            
-        
-            <h1><a name="xiaozhu.com">xiaozhu.com</a></h1>
-            
-            <p><a href="/articles/xiaozhu-im-part1.html">小猪IM整体架构及实现(1)</a></p>
-            
+        <a class="tag" href="/tag.html#PHP">PHP</a>
         
         </div>
+        <div id="article-content">
+            <h1 id="php连接mysql类文件">PHP连接Mysql类文件</h1>
+<hr>
+<pre class="prettyprint linenums lang-PHP">&lt;?php
+class mysql
+{
+    private $db_servername;
+    private $db_username;
+    private $db_password;
+    private $db_database;
+    private $db_coding;
+    private $db_showerror;
+    private $db_pconn;
+    function __construct($servername, $username, $password, $database, $coding, $showerror, $pconn) {
+        $this-&gt;db_servername = $servername;
+        $this-&gt;db_username = $username;
+        $this-&gt;db_password = $password;
+        $this-&gt;db_database = $database;
+        $this-&gt;db_coding = $coding;
+        $this-&gt;db_showerror = $showerror;
+        $this-&gt;db_pconn = $pconn;
+        if (!$this-&gt;showerror) {
+            error_reporting(0);
+        }
+        $this-&gt;connect();
+    }
+    function connect() {
+        if ($this-&gt;pconn) {
+            $this-&gt;conn = mysql_pconnect($this-&gt;db_servername, $this-&gt;db_username, $this-&gt;db_password);
+        } else {
+            $this-&gt;conn = mysql_connect($this-&gt;db_servername, $this-&gt;db_username, $this-&gt;db_password);
+        }
+        mysql_select_db($this-&gt;db_database, $this-&gt;conn) or die($this-&gt;error());
+        mysql_query(“SET NAME $this-&gt;db_coding”);
+    }
+    function search($table, $where) {
+        $this-&gt;sql = “SELECT * FROM ‘$table’ $where”;
+        return $this-&gt;query($this-&gt;sql);
+    }
+    function fetch($sql) {
+        $this-&gt;result = mysql_fetch_array($sql);
+        return $this-&gt;result;
+    }
+    function insert($table, $field, $value) {
+        $this-&gt;sql = “INSERT INTO ‘$this-&gt;database’.’$table’ ($field) VALUES($value);”;
+        return $this-&gt;query($this-&gt;sql);
+    }
+    function update($table, $field, $value, $where) {
+        $this-&gt;sql = “UPDATE ‘$this-&gt;database’.’$table’ SET ‘$field’ = ‘$value’ $where;”;
+        return $this-&gt;query($this-&gt;sql);
+    }
+    function delete($table, $where) {
+        $this-&gt;sql = “DELETE FROM ‘$this-&gt;database’.’$table’ $where;”;
+        return $this-&gt;query($this-&gt;sql);
+    }
+    function query($sql) {
+        $this-&gt;query = mysql_query($this-&gt;sql, $this-&gt;conn) or die($this-&gt;error());
+        return $this-&gt;query;
+    }
+    function num($sql) {
+        $this-&gt;query = $this-&gt;query($this-&gt;search($table, ‘’));
+        $this-&gt;num = mysql_num_rows($this-&gt;query);
+        return $this-&gt;num;
+    }
+    function error($value = ‘’) {
+        if ($this-&gt;db_showerror) {
+            echo “&lt;br&gt;Error&lt;br /&gt;”;
+            echo mysql_error() . “&lt;br /&gt;”;
+            echo $value;
+        }
+    }
+    function check($sql) {
+        $check = eregi(‘select|insert|update|delete|\’|\/\*|\*|\.\.\/|\.\/|union|into|load_file|outfile’, $sql);
+        if ($check) {
+            exit();
+        } else {
+            return htmlspecialchars($sql, ENT_QUOTES);
+        }
+    }
+    function __destruct() {
+        if (!empty($this-&gt;result)) {
+            mysql_free_result($this-&gt;result) or die($this-&gt;error(‘为节省系统资源数据库已被程序自动关闭,请不要重复连接数据库,或者将连接模式改为永久连接’));
+        }
+        mysql_close($this-&gt;conn);
+    }
+}
+?&gt;
+</pre>
+
+        </div>
+         <!--高速版，加载速度快，使用前需测试页面的兼容性-->
+ <div id="SOHUCS"></div>
+ <script>
+  (function(){
+       var appid = 'cyroPUdzz',
+           conf = 'prod_5d22351c707694b412deb5d3c2dcb492';
+               var doc = document,
+                   s = doc.createElement('script'),
+                   h = doc.getElementsByTagName('head')[0] || doc.head || doc.documentElement;
+                       s.type = 'text/javascript';
+                           s.charset = 'utf-8';
+                               s.src =  'http://assets.changyan.sohu.com/upload/changyan.js?conf='+ conf +'&appid=' + appid;
+                                   h.insertBefore(s,h.firstChild);
+                                       window.SCS_NO_IFRAME = true;
+                                         })()
+ </script>                
+
     </div>
 </div>
         <div id="footer">

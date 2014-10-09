@@ -1,3 +1,10 @@
+- id: mysqllib-php
+  title: PHP连接Mysql类文件
+  postedOn: !!str 2014-10-09
+  author: SoLoBlack
+  tags:
+    - PHP
+  abstract: PHP连接Mysql类文件
 - id: icomet-part1
   title: iComet代码粗解(1)
   postedOn: !!str 2014-09-29
