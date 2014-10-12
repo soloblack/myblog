@@ -1,4 +1,6 @@
 - id: about-me
   title: About me
-- id: Share
+- id: blog-share
   title: 技术博客分享
+- id: artical-share
+  title: 醍醐灌顶

@@ -3,9 +3,12 @@
   target: _self
 
 - label: 博客分享
-  href: /pages/Share.html
+  href: /pages/blog-share.html
   target: _self
 
+- label: 醍醐灌顶
+  href: /pages/artical-share.html
+  target: _self
 
 - label: 这个博客是如何搭建的
   href: https://github.com/ericzhang-cn/papery

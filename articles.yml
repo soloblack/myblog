@@ -1,3 +1,10 @@
+- id: work-exam
+  title: 最近笔试遇到的一些问题
+  postedOn: !!str 2014-10-12
+  author: SoLoBlack
+  tags:
+    - 笔试
+  abstract: 笔试经验分享
 - id: mysqllib-php
   title: PHP连接Mysql类文件
   postedOn: !!str 2014-10-09

@@ -7,7 +7,7 @@
         <meta name="keywords" content="keyword1,keyword2,keyword3"/>
         <meta name="author" content="Content of author meta tag"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-        <title>SoLoBlack - iComet代码粗解(1)
+        <title>SoLoBlack - 技术博客分享
 </title>
         <link rel="stylesheet" href="/assets/vendor/normalize.css"/>
         <link rel="stylesheet" href="/assets/vendor/prettify-night.css"/>
@@ -134,102 +134,20 @@ var _speedMark = new Date();
             </ul>
             <div style="clear:both;"></div>
         </div>
-        <div id="article-title">
-            <a href="/articles/icomet-part1.html">iComet代码粗解(1)</a>
-        </div>
-        <div id="article-meta">
-            作者 SoLoBlack | 发布于 2014-09-29
-        </div>
-        <div id="article-tags">
-        
-        <a class="tag" href="/tag.html#iComet">iComet</a>
-        
-        </div>
-        <div id="article-content">
-            <h1 id="icomet代码粗解（1）">iComet代码粗解（1）</h1>
-<hr>
-<!-- toc -->
-
-<ul>
-<li><a href="#初识icomet">初识iComet</a><ul>
-<li><a href="#subscriberh-subscribercpp">subscriber.h &amp; subscriber.cpp</a></li>
-<li><a href="#channelh-channelcpp">channel.h &amp; channel.cpp</a></li>
-<li><a href="#serverh-servercpp">server.h &amp; server.cpp</a></li>
-<li><a href="#presenceh">Presence.h</a></li>
-<li><a href="#comet-servercpp">comet-server.cpp</a></li>
-</ul>
-</li>
-<li><a href="#icomet结构-api">iComet结构 &amp; API</a><ul>
-<li><a href="#结构">结构</a></li>
-</ul>
-</li>
-</ul>
-<!-- toc stop -->
-
-<h2 id="初识icomet">初识iComet</h2>
-<p>iComet 是一个使用 C++ 语言开发的支持百万并发连接的 comet/push 服务器, 支持百万级并发连接, 内存占用少, 性能优越. 可用于移动 App 的 Push Server(消息推送服务器), 或者用于 Web Push(Web 服务器推). 用于 Web Push 时, 支持的浏览器和操作系统平台包括: Safari(iOS, Mac), Firefox/Chrome(Windows, Mac), IE6+
-<a href="http://www.ideawu.net/blog/icomet">iComet项目主页</a>，<a href="https://github.com/ideawu/icomet">GitHub地址</a>，在此感谢iComet的<a href="http://weibo.com/ideawu">作者ideawu</a>。</p>
-<p>推荐各位在阅读以下内容之前看一下原作者之前的两篇Blog：</p>
+        <h1>技术博客分享</h1>
+        <div id="page-content"><hr>
 <blockquote>
 <ul>
-<li><a href="http://www.ideawu.net/blog/archives/740.html">构建C1000K的服务器(1) – 基础</a></li>
-<li><a href="http://www.ideawu.net/blog/archives/742.html">构建C1000K的服务器(2) – 实现百万连接的comet服务器</a></li>
+<li><a href="http://zyan.cc/">张宴的博客</a></li>
+<li><a href="http://www.ideawu.net/">idea&#39;s web</a></li>
+<li><a href="http://blog.codinglabs.org/">CodingLabs</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/">阮一峰的个人博客</a></li>
+<li><a href="http://coolshell.cn/">CoolShell</a></li>
+<li><a href="http://zh.lucida.me/">Lucida</a></li>
+<li><a href="http://mindhacks.cn/">刘未鹏 | MIND HACKS</a></li>
 </ul>
 </blockquote>
-<p>在阅读完两篇blog之后让我们先粗略的了解一下整个代码。</p>
-<h3 id="subscriberh-amp-subscribercpp">subscriber.h &amp; subscriber.cpp</h3>
-<blockquote>
-<ul>
-<li>订阅者</li>
-</ul>
-</blockquote>
-<h3 id="channelh-amp-channelcpp">channel.h &amp; channel.cpp</h3>
-<blockquote>
-<ul>
-<li>通道，subscriber可以订阅通道，通道中有消息就会发过来</li>
-</ul>
-</blockquote>
-<h3 id="serverh-amp-servercpp">server.h &amp; server.cpp</h3>
-<blockquote>
-<ul>
-<li>server有多种连接策略，poll，iframe，stream</li>
-</ul>
-</blockquote>
-<h3 id="presenceh">Presence.h</h3>
-<blockquote>
-<ul>
-<li>相应的presence.cpp在另一个文件夹中，而现有的comet-server中已经整合了之前的功能，presence是一个特殊的订阅者（我是这么理解的），它订阅所有channel的存在情况（用在IM上就可以理解为在线状态）</li>
-</ul>
-</blockquote>
-<h3 id="comet-servercpp">comet-server.cpp</h3>
-<blockquote>
-<ul>
-<li>comet-server最终实现版本，暂且这里就列个TODO吧，理解不够深有点讲不清楚</li>
-</ul>
-</blockquote>
-<h2 id="icomet结构-amp-api">iComet结构 &amp; API</h2>
-<h3 id="结构">结构</h3>
-<p><img src="http://soloimage-soloimage.stor.sinaapp.com/original/776c88e46f39991731106860e78dd268.png" alt="iComet大致结构"></p>
-<p>每个Subscriber订阅一个Channel，每个Channel里有它的订阅者的链表。每个Channel被一个Server控制。</p>
-
-        </div>
-         <!--高速版，加载速度快，使用前需测试页面的兼容性-->
- <div id="SOHUCS"></div>
- <script>
-  (function(){
-       var appid = 'cyroPUdzz',
-           conf = 'prod_5d22351c707694b412deb5d3c2dcb492';
-               var doc = document,
-                   s = doc.createElement('script'),
-                   h = doc.getElementsByTagName('head')[0] || doc.head || doc.documentElement;
-                       s.type = 'text/javascript';
-                           s.charset = 'utf-8';
-                               s.src =  'http://assets.changyan.sohu.com/upload/changyan.js?conf='+ conf +'&appid=' + appid;
-                                   h.insertBefore(s,h.firstChild);
-                                       window.SCS_NO_IFRAME = true;
-                                         })()
- </script>                
-
+</div>
     </div>
 </div>
         <div id="footer">

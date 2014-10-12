@@ -10,7 +10,7 @@ meta:
   author: Content of author meta tag
 master:
   name: SoLoBlack
-  about: Introduce yourself here
+  about: Coding,Learning
   email: thesoloblack@gmail.com
 rss:
   title: RSS feed title
@@ -18,7 +18,7 @@ rss:
   lang: zh-cn
   max: 10
 copyright:
-  owner: Copyrighter
+  owner: SoLoBlack
   beginYear: 2014
   endYear: 2014
 theme: default

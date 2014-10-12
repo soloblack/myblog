@@ -7,7 +7,7 @@
         <meta name="keywords" content="keyword1,keyword2,keyword3"/>
         <meta name="author" content="Content of author meta tag"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-        <title>SoLoBlack - iComet代码粗解(1)
+        <title>SoLoBlack - 最近笔试遇到的一些问题
 </title>
         <link rel="stylesheet" href="/assets/vendor/normalize.css"/>
         <link rel="stylesheet" href="/assets/vendor/prettify-night.css"/>
@@ -135,82 +135,95 @@ var _speedMark = new Date();
             <div style="clear:both;"></div>
         </div>
         <div id="article-title">
-            <a href="/articles/icomet-part1.html">iComet代码粗解(1)</a>
+            <a href="/articles/work-exam.html">最近笔试遇到的一些问题</a>
         </div>
         <div id="article-meta">
-            作者 SoLoBlack | 发布于 2014-09-29
+            作者 SoLoBlack | 发布于 2014-10-12
         </div>
         <div id="article-tags">
         
-        <a class="tag" href="/tag.html#iComet">iComet</a>
+        <a class="tag" href="/tag.html#笔试">笔试</a>
         
         </div>
         <div id="article-content">
-            <h1 id="icomet代码粗解（1）">iComet代码粗解（1）</h1>
-<hr>
+            <hr>
 <!-- toc -->
 
 <ul>
-<li><a href="#初识icomet">初识iComet</a><ul>
-<li><a href="#subscriberh-subscribercpp">subscriber.h &amp; subscriber.cpp</a></li>
-<li><a href="#channelh-channelcpp">channel.h &amp; channel.cpp</a></li>
-<li><a href="#serverh-servercpp">server.h &amp; server.cpp</a></li>
-<li><a href="#presenceh">Presence.h</a></li>
-<li><a href="#comet-servercpp">comet-server.cpp</a></li>
-</ul>
-</li>
-<li><a href="#icomet结构-api">iComet结构 &amp; API</a><ul>
-<li><a href="#结构">结构</a></li>
+<li><a href="#第一题">第一题</a><ul>
+<li><a href="#描述">描述</a></li>
+<li><a href="#分析">分析</a></li>
+<li><a href="#实现">实现</a></li>
 </ul>
 </li>
 </ul>
 <!-- toc stop -->
 
-<h2 id="初识icomet">初识iComet</h2>
-<p>iComet 是一个使用 C++ 语言开发的支持百万并发连接的 comet/push 服务器, 支持百万级并发连接, 内存占用少, 性能优越. 可用于移动 App 的 Push Server(消息推送服务器), 或者用于 Web Push(Web 服务器推). 用于 Web Push 时, 支持的浏览器和操作系统平台包括: Safari(iOS, Mac), Firefox/Chrome(Windows, Mac), IE6+
-<a href="http://www.ideawu.net/blog/icomet">iComet项目主页</a>，<a href="https://github.com/ideawu/icomet">GitHub地址</a>，在此感谢iComet的<a href="http://weibo.com/ideawu">作者ideawu</a>。</p>
-<p>推荐各位在阅读以下内容之前看一下原作者之前的两篇Blog：</p>
+<h2 id="第一题">第一题</h2>
+<h3 id="描述">描述</h3>
 <blockquote>
 <ul>
-<li><a href="http://www.ideawu.net/blog/archives/740.html">构建C1000K的服务器(1) – 基础</a></li>
-<li><a href="http://www.ideawu.net/blog/archives/742.html">构建C1000K的服务器(2) – 实现百万连接的comet服务器</a></li>
+<li>这道题是10月11日京东笔试的笔试题
+具体描述记不太清了，大概是这样的：给一个数n，输出一个最小的数m，使得m的各个位的乘积等于n。
+例如: 输入36，输出49；输入100，输出455</li>
 </ul>
 </blockquote>
-<p>在阅读完两篇blog之后让我们先粗略的了解一下整个代码。</p>
-<h3 id="subscriberh-amp-subscribercpp">subscriber.h &amp; subscriber.cpp</h3>
+<h3 id="分析">分析</h3>
 <blockquote>
 <ul>
-<li>订阅者</li>
+<li><p>关键字：最小
+拿到题之后我自己在草稿纸上画图分析，当时画了这样一个图
+<img src="http://soloimage-soloimage.stor.sinaapp.com/original/48d6ddd3b0f29a444df540cb94871a07.png" alt="此处输入图片的描述">
+感觉这样就把所有的情况列举了出来，然后一步步算把最小的记录下来就行。
+事实上这种方法是可以得到正确结果的，但明显是非常暴力的。
+由于时间关系当时在卷子上实现的程序就是按照这个想法去写的。</p>
+</li>
+<li><p>但是我回到家里越想越不对。明显这么做是一分都拿不到的。。。
+仔细阅读了题目之后，发现题目要求的最小会是一个突破口。
+于是有了下面的想法
+divider从9开始，一直到1，看n能不能整除divider，如果能整除了，将rs的最低位写为divider，进行下一轮，如果某一轮divider到了1，返回-1。每次n=n/divider，直到n小于10。
+比如126，
+第一轮divider为9，有n=126/9=14  rs=9
+第二轮divider为7，有n=14/7=2    rs=79 
+n已经小于10了，rs=279 
+目前来讲我认为这么做是最优的，如果各位有更好的方法欢迎交流。</p>
+</li>
 </ul>
 </blockquote>
-<h3 id="channelh-amp-channelcpp">channel.h &amp; channel.cpp</h3>
-<blockquote>
-<ul>
-<li>通道，subscriber可以订阅通道，通道中有消息就会发过来</li>
-</ul>
-</blockquote>
-<h3 id="serverh-amp-servercpp">server.h &amp; server.cpp</h3>
-<blockquote>
-<ul>
-<li>server有多种连接策略，poll，iframe，stream</li>
-</ul>
-</blockquote>
-<h3 id="presenceh">Presence.h</h3>
-<blockquote>
-<ul>
-<li>相应的presence.cpp在另一个文件夹中，而现有的comet-server中已经整合了之前的功能，presence是一个特殊的订阅者（我是这么理解的），它订阅所有channel的存在情况（用在IM上就可以理解为在线状态）</li>
-</ul>
-</blockquote>
-<h3 id="comet-servercpp">comet-server.cpp</h3>
-<blockquote>
-<ul>
-<li>comet-server最终实现版本，暂且这里就列个TODO吧，理解不够深有点讲不清楚</li>
-</ul>
-</blockquote>
-<h2 id="icomet结构-amp-api">iComet结构 &amp; API</h2>
-<h3 id="结构">结构</h3>
-<p><img src="http://soloimage-soloimage.stor.sinaapp.com/original/776c88e46f39991731106860e78dd268.png" alt="iComet大致结构"></p>
-<p>每个Subscriber订阅一个Channel，每个Channel里有它的订阅者的链表。每个Channel被一个Server控制。</p>
+<h3 id="实现">实现</h3>
+<pre class="prettyprint linenums lang-c++">#include &lt;iostream&gt;
+using namespace std;
+int func(int n){
+    cout&lt;&lt;”call func “&lt;&lt;n&lt;&lt;endl;
+    if(n&gt;=1&amp;&amp;n&lt;=9) 
+        return n;
+    int result=0;
+    int tmp=0;
+    int flag=0;
+    for(int i=9;i&gt;=2;i--){
+        if(n%i==0){
+            flag=1;
+            tmp=n/i;
+            if(tmp==1){
+                result=i;
+                break;
+            }
+            else{
+                result=func(tmp)*10+i;
+                break;
+            }
+        }       
+    }
+    if(flag&amp;&amp;result&gt;0)
+        return result;
+    else 
+        return -1;
+}
+int main(){
+    cout&lt;&lt;func(36);
+    return 0; 
+}
+</pre>
 
         </div>
          <!--高速版，加载速度快，使用前需测试页面的兼容性-->
